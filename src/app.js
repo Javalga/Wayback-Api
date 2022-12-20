@@ -2,6 +2,10 @@ const express = require("express")
 const cors = require("cors")
 const locationsRouters = require('./routers/locations.router')
 const warehousesRouters = require("./routers/warehouses.router")
+const rolesRouters = require("./routers/roles.router");
+const usersRouters = require("./routers/users.router");
+const incidence_typeRouters = require("./routers/incidence_type.router");
+
 const errorHandling = require('./error/errorHandling')
 
 const app = express()
@@ -15,6 +19,9 @@ app.use(express.json())
 //routers
 app.use(locationsRouters);
 app.use(warehousesRouters);
+app.use(rolesRouters);
+app.use(usersRouters);
+app.use(incidence_typeRouters);
 
 app.use((req, res, next) => {
     res.status(404).json({
