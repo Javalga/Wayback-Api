@@ -13,4 +13,4 @@ function getLocations(request, response) {
   });
 }
 
-module.exports = getLocations;
+module.exports = {getLocations};
