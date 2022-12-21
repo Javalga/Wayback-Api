@@ -12,8 +12,8 @@ function getUsers(request, response) {
   });
 }
 
-const login = (req, res) => {
-  let sql = `SELECT username, password FROM users WHERE username = ${req.body.username} AND password = ${req.body.password}`;
+const login = (request, response) => {
+  let sql = `SELECT * FROM users WHERE username = \"${request.body.username}\" AND password = \"${request.body.password}\"`;
   connection.query(sql, function (err, result) {
     if (err) {
       console.log(err);
