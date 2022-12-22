@@ -21,7 +21,7 @@ app.use(locationsRouters);
 app.use(warehousesRouters);
 app.use(rolesRouters);
 app.use(usersRouters);
-app.use(incidence_typeRouters);
+app.use(incident_typeRouters);
 
 app.use((req, res, next) => {
     res.status(404).json({
