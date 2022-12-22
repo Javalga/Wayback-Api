@@ -12,4 +12,4 @@ function getIncidents_type(request, response) {
   });
 }
 
-module.exports = { getIncident_type };
+module.exports = { getIncidents_type };
