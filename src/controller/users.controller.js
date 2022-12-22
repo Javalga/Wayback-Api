@@ -30,8 +30,6 @@ const login = (request, response) => {
 }
 
 const postUsers = (request, response) => {
-
-  console.log(request.body)
   let params = [
     request.body.username,
     request.body.password,
@@ -42,8 +40,10 @@ const postUsers = (request, response) => {
     request.body.location_id,
     request.body.active,
   ];
+
   // let sql =
   //   "INSERT INTO `users` (`username`, `password`, `name`, `role_id`, `mail`, `warehouse_id`, `location_id`, `active`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
   connection.query(sql, params, (err, result) => {
     if (err) {
       console.log(err);
