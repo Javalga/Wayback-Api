@@ -23,4 +23,30 @@ const login = (request, response) => {
     }
   });
 }
-module.exports = { getUsers, login };
+
+const postUsers = (request, response) => {
+
+  console.log(request.body)
+  let params = [
+    request.body.username,
+    request.body.password,
+    request.body.name,
+    request.body.role_id,
+    request.body.mail,
+    request.body.warehouse_id,
+    request.body.location_id,
+    request.body.active,
+  ];
+  // let sql =
+  //   "INSERT INTO `users` (`username`, `password`, `name`, `role_id`, `mail`, `warehouse_id`, `location_id`, `active`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+  connection.query(sql, params, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
+};
+
+module.exports = { getUsers, login, postUsers };
