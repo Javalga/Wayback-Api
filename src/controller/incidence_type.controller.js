@@ -1,7 +1,7 @@
 const connection = require("../database");
 
 function getIncidents_type(request, response) {
-  let sql = "SELECT * FROM incidence_type;";
+  let sql = "SELECT * FROM incident_type;";
   connection.query(sql, function (err, result) {
     if (err) {
       console.log(err);
@@ -12,4 +12,4 @@ function getIncidents_type(request, response) {
   });
 }
 
-module.exports = { getIncidence_type };
+module.exports = { getIncident_type };
