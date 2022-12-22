@@ -1,6 +1,6 @@
 const connection = require("../database");
 
-function getIncidence_type(request, response) {
+function getIncidents_type(request, response) {
   let sql = "SELECT * FROM incidence_type;";
   connection.query(sql, function (err, result) {
     if (err) {
