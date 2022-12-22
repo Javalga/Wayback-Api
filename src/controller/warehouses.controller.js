@@ -1,9 +1,9 @@
 const connection = require("../database");
 
-function getWarehouses(request, response) {
-  
+const getWarehouses = (request, response) => {
+
   let sql = "SELECT w.warehouse_id ,w.name, l.name AS location, w.location_id FROM warehouses AS w INNER JOIN locations AS l ON(l.location_id = w.location_id);";
-  connection.query(sql, function (err, result) {
+  connection.query(sql, (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -13,12 +13,12 @@ function getWarehouses(request, response) {
   });
 }
 
-function postWarehouses(request, response){
+const postWarehouses = (request, response) => {
 
-  let params = [];
+  let params = [request.body.name, request.body.location_id];
   let sql =
-    "SELECT w.warehouse_id ,w.name, l.name AS location FROM warehouses AS w INNER JOIN locations AS l ON(l.location_id = w.location_id);";
-  connection.query(sql,params, function (err, result) {
+    `INSERT INTO warehouses (name, location_id) VALUES (?, ?)`;
+  connection.query(sql, params, (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -28,4 +28,33 @@ function postWarehouses(request, response){
   });
 }
 
-module.exports = { getWarehouses, postWarehouses };
+const putWarehouses = (request, response) => {
+  let params = [request.body.name, request.body.location_id]
+  let sql =
+    `UPDATE warehouses
+    SET
+    name = COALESCE(?, name),
+    location_id = COALESCE(?, location_id)`
+  connection.query(sql, params, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
+}
+
+const deleteWarehouses = (request, response) => {
+  let sql = `DELETE FROM warehouses WHERE warehouse_id = ${request.body.warehouse_id}`
+  connection.query(sql, params, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
+}
+
+module.exports = { getWarehouses, postWarehouses, putWarehouses, deleteWarehouses };
