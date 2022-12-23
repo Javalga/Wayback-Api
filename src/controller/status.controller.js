@@ -16,7 +16,7 @@ const putStatus = (request, response) => {
     console.log(request.body)
     let params = [
       request.body.status_id,
-      request.body.number_expedient,
+      request.body.incidence_ref,
       request.body.warehouse_id,
     ];
   let sql =
