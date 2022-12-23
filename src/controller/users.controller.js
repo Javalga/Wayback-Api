@@ -30,6 +30,7 @@ const login = (request, response) => {
 }
 
 const postUsers = (request, response) => {
+  
   let params = [
     request.body.username,
     request.body.password,
@@ -41,8 +42,10 @@ const postUsers = (request, response) => {
     request.body.active,
   ];
 
-  // let sql =
-  //   "INSERT INTO `users` (`username`, `password`, `name`, `role_id`, `mail`, `warehouse_id`, `location_id`, `active`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+  console.log("funciono")
+  
+  let sql =
+    "INSERT INTO `users` (`username`, `password`, `name`, `role_id`, `mail`, `warehouse_id`, `location_id`, `active`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
   connection.query(sql, params, (err, result) => {
     if (err) {
@@ -54,4 +57,31 @@ const postUsers = (request, response) => {
   });
 };
 
-module.exports = { getUsers, login, postUsers };
+const putUser = (request, response) => {
+  let params = [
+    request.body.password,
+    request.body.name,
+    request.body.role_id,
+    request.body.mail,
+    request.body.warehouse_id,
+    request.body.location_id,
+    request.body.active,
+    request.body.username,
+  ];
+
+  console.log("funciono");
+
+  let sql =
+    "UPDATE `users` SET `password` = ?, `name` = ?, `role_id` = ?, `mail` = ?, `warehouse_id` = ?, `location_id` = ?, `active` = ? WHERE (`username` = ?);";
+
+  connection.query(sql, params, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
+};
+
+module.exports = { getUsers, login, postUsers, putUser };
