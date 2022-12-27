@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const nodemailer = require('nodemailer')
 const locationsRouters = require('./routers/locations.router')
 const warehousesRouters = require("./routers/warehouses.router")
 const rolesRouters = require("./routers/roles.router");
@@ -7,7 +8,7 @@ const usersRouters = require("./routers/users.router");
 const incidenceRouters = require("./routers/incidence.router");
 const incidence_typeRouters = require("./routers/incidence_type.router");
 const statusRouters = require("./routers/status.router");
-
+const mailerRouters = require("./routers/mailer.router")
 const errorHandling = require('./error/errorHandling')
 
 const app = express()
@@ -26,6 +27,7 @@ app.use(usersRouters);
 app.use(incidenceRouters);
 app.use(incidence_typeRouters);
 app.use(statusRouters);
+app.use(mailerRouters);
 
 app.use((req, res, next) => {
     res.status(404).json({
