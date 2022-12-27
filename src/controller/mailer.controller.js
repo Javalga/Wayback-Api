@@ -13,13 +13,10 @@ let transporter = nodemailer.createTransport({
 const sendEmail = async (request, response) => {
   try {
     let info = await transporter.sendMail({
-      from: '"Resolve failed delivery" <WaybackApp@gmail.com>', // sender address
+      from: '<WaybackApp@gmail.com>', // sender address
       to: request.body.email, // list of receivers
-      subject: "Resolve failed delivery", // Subject line 
-      html: `
-        <b>Please click on the following link to resolve the incidence with your delivery.</b>
-        <a>${request.body.link}</a>
-      `, // html body
+      subject: request.body.subject, // Subject line 
+      html: request.body.html, // html body
     });
     response.send(info)
   } catch (err) {
