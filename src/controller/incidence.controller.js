@@ -1,12 +1,33 @@
 const connection = require("../database");
 
 const getIncidences = (request, response) => {
-  let sql;
-  if (request.query) {
-    sql = `SELECT * FROM csv WHERE number_expedient = ${request.query.number_expedient}`;
-  } else {
-    sql = "SELECT * FROM csv";
-  }
+  // let sql;
+  // if (request.query) {
+  //   sql = `SELECT * FROM csv WHERE number_expedient = ${request.query.number_expedient}`;
+  // } else {
+  //   sql = "SELECT * FROM csv";
+  // }
+  // connection.query(sql, (err, result) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     response.send(result);
+  //     console.log(result);
+  //   }
+  // });
+};
+
+const getIncidenceProcessed = (request, response) =>
+{
+  let sql =
+    "SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address, i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, d.name AS delivery_time, w.name AS warehouse FROM incidence AS i INNER JOIN status AS s ON(i.status_id = s.status_id) INNER JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id) INNER JOIN delivery_time AS d ON(i.delivery_time_id = d.delivery_time_id) INNER JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)";
+  // }
+  // if(request.query){
+  //   sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address, i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, d.name AS delivery_time, w.name AS warehouse FROM incidence AS i INNER JOIN status AS s ON(i.status_id = s.status_id) INNER JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id) INNER JOIN delivery_time AS d ON(i.delivery_time_id = d.delivery_time_id) INNER JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id) WHERE i.incidence_ref =${request.query.incidence_ref}`;
+  // }else{
+  //   sql =
+  //     "SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address, i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, d.name AS delivery_time, w.name AS warehouse FROM incidence AS i INNER JOIN status AS s ON(i.status_id = s.status_id) INNER JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id) INNER JOIN delivery_time AS d ON(i.delivery_time_id = d.delivery_time_id) INNER JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)";
+  // }
   connection.query(sql, (err, result) => {
     if (err) {
       console.log(err);
@@ -15,7 +36,8 @@ const getIncidences = (request, response) => {
       console.log(result);
     }
   });
-};
+}
+
 
 const postIncidence = (request, response) => {
   console.log(request.body);
@@ -50,4 +72,4 @@ const postIncidence = (request, response) => {
   });
 };
 
-module.exports = { getIncidences, postIncidence };
+module.exports = { getIncidences, getIncidenceProcessed, postIncidence };
