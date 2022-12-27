@@ -1,20 +1,20 @@
 const connection = require("../database");
 
 const getIncidences = (request, response) => {
-  // let sql;
-  // if (request.query) {
-  //   sql = `SELECT * FROM csv WHERE number_expedient = ${request.query.number_expedient}`;
-  // } else {
-  //   sql = "SELECT * FROM csv";
-  // }
-  // connection.query(sql, (err, result) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     response.send(result);
-  //     console.log(result);
-  //   }
-  // });
+  let sql;
+  if (request.query) {
+    sql = `SELECT * FROM csv WHERE number_expedient = ${request.query.number_expedient}`;
+  } else {
+    sql = "SELECT * FROM csv";
+  }
+  connection.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
 };
 
 const getIncidenceProcessed = (request, response) => {
@@ -52,11 +52,11 @@ const postIncidence = (request, response) => {
     request.body.customer_address,
     request.body.customer_cp,
     request.body.customer_city,
-    // request.body.input_date,
+    request.body.input_date,
     request.body.warehouse_id,
   ];
   let sql =
-    "INSERT INTO `incidence` (`incidence_ref`, `status_id`, `incidence_type_id`, `customer_name`, `customer_phone`, `customer_mail`, `customer_address`, `customer_cp`, `customer_city`, `warehouse_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    "INSERT INTO `incidence` (`incidence_ref`, `status_id`, `incidence_type_id`, `customer_name`, `customer_phone`, `customer_mail`, `customer_address`, `customer_cp`, `customer_city`,`input_date`, `warehouse_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
   connection.query(sql, params, (err, result) => {
     if (err) {
       let mensaje_error;
