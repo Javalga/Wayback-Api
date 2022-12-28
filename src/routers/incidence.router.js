@@ -6,6 +6,7 @@ router.get('/incidence', incidentsCtrl.getIncidences);
 router.get("/incidence_processed", incidentsCtrl.getIncidenceProcessed);
 router.post("/incidence", incidentsCtrl.postIncidence);
 router.get("/incidence_solved", incidentsCtrl.getIncidenceSolved);
+router.get("/incidence_to_return", incidentsCtrl.getIncidenceToReturn);
 
 
 

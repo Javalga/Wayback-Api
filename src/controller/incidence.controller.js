@@ -90,16 +90,7 @@ const getIncidenceSolved = (request, response) => {
     request.query.until
   ];
 
-  let sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
-  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, w.name AS warehouse FROM incidence AS i 
-  INNER JOIN status AS s ON(i.status_id = s.status_id)
-  INNER JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
-  INNER JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)
-  WHERE (i.input_date IS NULL OR i.input_date IS NOT NULL)
-  AND (i.output_date IS NULL OR i.output_date IS NOT NULL)
-  AND (i.next_delivery IS NULL OR i.next_delivery IS NOT NULL)
-  AND (i.delivery_time_id IS NULL OR i.delivery_time_id IS NOT NULL)
-  AND (i.next_delivery BETWEEN ? AND ?)`;
+  let sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address, i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, w.name AS warehouse FROM incidence AS i  INNER JOIN status AS s ON(i.status_id = s.status_id) INNER JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id) INNER JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id) WHERE (i.input_date IS NULL OR i.input_date IS NOT NULL) AND (i.output_date IS NULL OR i.output_date IS NOT NULL) AND (i.next_delivery IS NULL OR i.next_delivery IS NOT NULL) AND (i.delivery_time_id IS NULL OR i.delivery_time_id IS NOT NULL) AND (i.next_delivery BETWEEN ? AND ?) AND (i.status_id = 2)`;
 
   connection.query(sql, params, (err, result) => {
     if (err) {
@@ -111,4 +102,25 @@ const getIncidenceSolved = (request, response) => {
   });
 }
 
-module.exports = { getIncidences, getIncidenceProcessed, postIncidence, getIncidenceSolved };
+const getIncidenceToReturn = (request, response) => {
+  let params = [request.query.since, request.query.until];
+
+  let sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address, i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, w.name AS warehouse FROM incidence AS i  INNER JOIN status AS s ON(i.status_id = s.status_id) INNER JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id) INNER JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id) WHERE (i.input_date IS NULL OR i.input_date IS NOT NULL) AND (i.output_date IS NULL OR i.output_date IS NOT NULL) AND (i.next_delivery IS NULL OR i.next_delivery IS NOT NULL) AND (i.delivery_time_id IS NULL OR i.delivery_time_id IS NOT NULL) AND (i.input_date BETWEEN ? AND ?) AND (i.status_id = 1)`;
+
+  connection.query(sql, params, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
+};
+
+module.exports = {
+  getIncidences,
+  getIncidenceProcessed,
+  postIncidence,
+  getIncidenceSolved,
+  getIncidenceToReturn,
+};
