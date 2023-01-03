@@ -123,4 +123,5 @@ module.exports = {
   postIncidence,
   getIncidenceSolved,
   getIncidenceToReturn,
+  
 };
