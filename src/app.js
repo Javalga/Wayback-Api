@@ -1,6 +1,5 @@
 const express = require("express")
 const cors = require("cors")
-const nodemailer = require('nodemailer')
 const locationsRouters = require('./routers/locations.router')
 const warehousesRouters = require("./routers/warehouses.router")
 const rolesRouters = require("./routers/roles.router");
