@@ -157,7 +157,7 @@ const putIncidence = (req, res) => {
     customer_city = \"${incidence.customer_city}\", 
     next_delivery= \"${incidence.next_delivery}\",
     delivery_time_id= \"${incidence.delivery_time_id}\"
-    WhERE incidence_ref = \"${incidence.incidence_ref}\"`
+    WHERE incidence_ref = \"${incidence.incidence_ref}\"`
     answer = { error: false, code: 200, message: 'Incidence updated', result: mark }
   } else {
     console.log('Please fill all the inputs');
