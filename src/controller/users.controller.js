@@ -3,9 +3,10 @@ const connection = require("../database");
 function getUsers(request, response) {
   let sql;
   if (request.query.username) {
-    sql = `SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM users AS u  JOIN roles AS r ON(u.role_id = r.role_id) JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) JOIN locations AS l ON(l.location_id = u.location_id) WHERE u.username = ${request.query.username};`
+    sql = `SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) WHERE u.username = ${request.query.username} `;
   } else {
-    sql = "SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM users AS u  JOIN roles AS r ON(u.role_id = r.role_id) JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) JOIN locations AS l ON(l.location_id = u.location_id);";
+    sql =
+      "SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) ";
   }
   connection.query(sql, function (err, result) {
     if (err) {
