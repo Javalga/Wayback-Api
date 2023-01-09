@@ -143,7 +143,7 @@ const putIncidence = (req, res) => {
     customer_city: req.body.customer_city,
     next_delivery: req.body.next_delivery,
     delivery_time_id: req.body.delivery_time_id,
-    status_id: req.body.status
+    status_id: req.body.status_id
   }
   if (incidence != null) {
     console.log(req.body);
