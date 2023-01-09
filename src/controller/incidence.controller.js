@@ -17,9 +17,10 @@ const getIncidences = (request, response) => {
   });
 };
 
-const getIncidenceProcessed = (request, response) => {   let sql;
+const getIncidenceProcessed = (request, response) => {
+  let sql;
   if (request.query.incidence_ref) {
-   sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
+    sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
   i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id FROM incidence AS i 
   INNER JOIN status AS s ON(i.status_id = s.status_id)
   INNER JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
@@ -117,10 +118,68 @@ const getIncidenceToReturn = (request, response) => {
   });
 };
 
+const getFilteredIncidences = (request, response) => {
+  let params = [request.query.col, request.query.value]
+  let sql = `SELECT * FROM csv WHERE ? = ?`
+  connection.query(sql, params, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
+}
+const putIncidence = (req, res) => {
+  let answer;
+  let sql;
+  let incidence = {
+    incidence_ref: req.body.incidence_ref,
+    customer_name: req.body.customer_name,
+    customer_phone: req.body.customer_phone,
+    customer_mail: req.body.customer_mail,
+    customer_address: req.body.customer_address,
+    customer_cp: req.body.customer_cp,
+    customer_city: req.body.customer_city,
+    next_delivery: req.body.next_delivery,
+    delivery_time_id: req.body.delivery_time_id,
+    status_id: req.body.status
+  }
+  if (incidence != null) {
+    console.log(req.body);
+    sql = `UPDATE incidence SET 
+    status_id = \"${incidence.status_id}\", 
+    customer_name = \"${incidence.customer_name}\", 
+    customer_phone = \"${incidence.customer_phone}\",
+    customer_mail = \"${incidence.customer_mail}\", 
+    customer_address = \"${incidence.customer_address}\", 
+    customer_cp = \"${incidence.customer_cp}\", 
+    customer_city = \"${incidence.customer_city}\", 
+    next_delivery= \"${incidence.next_delivery}\",
+    delivery_time_id= \"${incidence.delivery_time_id}\"
+    WhERE incidence_ref = \"${incidence.incidence_ref}\"`
+    answer = { error: false, code: 200, message: 'Incidence updated', result: mark }
+  } else {
+    console.log('Please fill all the inputs');
+    answer = { error: true, code: 200, message: 'Please fill al the inputs' }
+  }
+  connection.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+      answer = err
+    } else {
+      console.log('Query done');
+      console.log(result);
+    }
+    res.send(answer)
+  })
+}
 module.exports = {
   getIncidences,
   getIncidenceProcessed,
   postIncidence,
   getIncidenceSolved,
   getIncidenceToReturn,
+  getFilteredIncidences,
+  putIncidence
 };
