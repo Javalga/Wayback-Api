@@ -18,6 +18,8 @@ const sendEmail = async (request, response) => {
       subject: request.body.subject, // Subject line 
       html: request.body.html, // html body
     });
+    console.log('eoioasd');
+    console.log(info);
     response.send(info)
   } catch (err) {
     console.log(err);
