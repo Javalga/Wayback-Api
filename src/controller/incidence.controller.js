@@ -183,6 +183,28 @@ const putIncidence = (req, res) => {
     res.send(answer)
   })
 }
+  const getIncidenceDashboard = (request, response) => {
+    
+    console.log(request.query.since, request.query.until);
+    let sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
+  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM incidence AS i 
+  LEFT JOIN status AS s ON(i.status_id = s.status_id)
+  LEFT JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
+  LEFT JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)
+  LEFT JOIN delivery_time AS d ON(i.delivery_time_id = d.delivery_time_id)
+  LEFT JOIN locations AS l ON(i.location_id = l.location_id) 
+   WHERE (input_date BETWEEN "${request.query.since}" AND "${request.query.until}")`;
+
+    connection.query(sql, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        response.send(result);
+        console.log(result);
+      }
+    });
+  };
+
 module.exports = {
   getIncidences,
   getIncidenceProcessed,
@@ -190,5 +212,6 @@ module.exports = {
   getIncidenceSolved,
   getIncidenceToReturn,
   getFilteredIncidences,
-  putIncidence
+  putIncidence,
+  getIncidenceDashboard,
 };

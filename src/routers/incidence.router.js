@@ -8,6 +8,7 @@ router.post("/incidence", incidentsCtrl.postIncidence);
 router.get("/incidence_solved", incidentsCtrl.getIncidenceSolved);
 router.get("/incidence_to_return", incidentsCtrl.getIncidenceToReturn);
 router.put("/incidence_form", incidentsCtrl.putIncidence);
+router.get("/incidence_dashboard", incidentsCtrl.getIncidenceDashboard);
 
 
 
