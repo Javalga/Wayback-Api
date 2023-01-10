@@ -19,7 +19,10 @@ function getUsers(request, response) {
 }
 
 const login = (request, response) => {
-  let sql = `SELECT * FROM users WHERE username = \"${request.body.username}\" AND password = \"${request.body.password}\"`;
+  let sql = `SELECT u.user_id, u.username, u.password, u.name, u.role_id, u.mail, u.warehouse_id, u.location_id, u.active, r.name AS role, w.name AS warehouse, l.name AS location FROM users AS u 
+  LEFT JOIN roles AS r ON(u.role_id = r.role_id)
+  LEFT JOIN locations AS l ON(u.location_id = l.location_id)
+  LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) WHERE username = \"${request.body.username}\" AND password = \"${request.body.password}\"`;
   connection.query(sql, function (err, result) {
     if (err) {
       console.log(err);
