@@ -51,6 +51,7 @@ const getIncidenceProcessed = (request, response) => {
   connection.query(sql, (err, result) => {
     if (err) {
       console.log(err);
+      response.send(err)
     } else {
       response.send(result);
       console.log(result);
@@ -165,8 +166,20 @@ const putIncidence = (req, res) => {
     delivery_time_id: req.body.delivery_time_id,
     status_id: req.body.status_id
   }
-  if (incidence != null) {
+  if (incidence != null && req.body.next_delivery == undefined && req.body.delivery_time_id == undefined) {
     console.log(req.body);
+    sql = `UPDATE incidence SET 
+    status_id = \"${incidence.status_id}\", 
+    customer_name = \"${incidence.customer_name}\", 
+    customer_phone = \"${incidence.customer_phone}\",
+    customer_mail = \"${incidence.customer_mail}\", 
+    customer_address = \"${incidence.customer_address}\", 
+    customer_cp = \"${incidence.customer_cp}\", 
+    customer_city = \"${incidence.customer_city}\" 
+    WHERE incidence_ref = \"${incidence.incidence_ref}\"`;    
+    answer = { error: false, code: 200, message: 'Incidence updated', result: incidence }
+  } else {
+    
     sql = `UPDATE incidence SET 
     status_id = \"${incidence.status_id}\", 
     customer_name = \"${incidence.customer_name}\", 
@@ -177,11 +190,13 @@ const putIncidence = (req, res) => {
     customer_city = \"${incidence.customer_city}\", 
     next_delivery= \"${incidence.next_delivery}\",
     delivery_time_id= \"${incidence.delivery_time_id}\"
-    WHERE incidence_ref = \"${incidence.incidence_ref}\"`
-    answer = { error: false, code: 200, message: 'Incidence updated', result: incidence }
-  } else {
-    console.log('Please fill all the inputs');
-    answer = { error: true, code: 200, message: 'Please fill al the inputs' }
+    WHERE incidence_ref = \"${incidence.incidence_ref}\"`;
+    answer = {
+      error: false,
+      code: 200,
+      message: "Incidence updated",
+      result: incidence,
+    };
   }
   connection.query(sql, (err, result) => {
     if (err) {
