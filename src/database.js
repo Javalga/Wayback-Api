@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
     "wayback-database.cyavsibz6fni.us-east-1.rds.amazonaws.com",
   user: process.env.DB_USER || "admin",
   password: process.env.DB_PASSWORD || "EjpHf7yEAR7BsJ08xoEY",
-  database: process.env.DB_NAME || "",
+  database: process.env.DB_NAME || "railway",
   port: process.env.DB_PORT || 3306,
 });
 

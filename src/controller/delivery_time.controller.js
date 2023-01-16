@@ -1,7 +1,7 @@
 const connection = require("../database");
 
 function getDelivery_time(request, response) {
-  let sql = "SELECT * FROM delivery_time;";
+  let sql = "SELECT * FROM railway.delivery_time;";
   connection.query(sql, function (err, result) {
     if (err) {
       console.log(err);
