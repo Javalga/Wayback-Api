@@ -3,7 +3,7 @@ const connection = require("../database");
 function getUsers(request, response) {
   let sql;
   if (request.query.username) {
-    sql = `SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM railway.users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) WHERE u.username = ${request.query.username} `;
+    sql = `SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM railway.users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) WHERE u.username = "${request.query.username}" `;
   } else {
     sql =
       "SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM railway.users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) ";
@@ -17,6 +17,20 @@ function getUsers(request, response) {
     }
   });
 }
+
+function getAdminToRecoverPassword(request, response) {
+  let sql = `SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM railway.users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) WHERE u.location_id = ${request.query.location_id} AND u.role_id = 2 AND u.active = 1`;
+  
+  connection.query(sql, function (err, result) {
+    if (err) {
+      console.log(err);
+    } else {
+      response.send(result);
+      console.log(result);
+    }
+  });
+}
+
 
 const login = (request, response) => {
   let sql = `SELECT u.user_id, u.username, u.password, u.name, u.role_id, u.mail, u.warehouse_id, u.location_id, u.active, r.name AS role, w.name AS warehouse, l.name AS location FROM railway.users AS u 
@@ -88,4 +102,10 @@ const putUser = (request, response) => {
   });
 };
 
-module.exports = { getUsers, login, postUsers, putUser };
+module.exports = {
+  getUsers,
+  login,
+  postUsers,
+  putUser,
+  getAdminToRecoverPassword,
+};
