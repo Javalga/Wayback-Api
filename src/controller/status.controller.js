@@ -1,7 +1,7 @@
 const connection = require("../database");
 
 const getStatus = (request, response) => {
-    let sql = "SELECT * FROM status";
+    let sql = "SELECT * FROM railway.status";
     connection.query(sql, function (err, result) {
       if (err) {
         console.log(err);

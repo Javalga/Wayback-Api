@@ -3,10 +3,10 @@ const connection = require("../database");
 function getUsers(request, response) {
   let sql;
   if (request.query.username) {
-    sql = `SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) WHERE u.username = ${request.query.username} `;
+    sql = `SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM railway.users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) WHERE u.username = ${request.query.username} `;
   } else {
     sql =
-      "SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) ";
+      "SELECT u.username, u.password, u.name, r.name AS role, u.mail, w.name AS warehouse, l.name AS location, u.active, u.warehouse_id, u.role_id, u.location_id FROM railway.users AS u INNER JOIN roles AS r ON(u.role_id = r.role_id) LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) LEFT JOIN locations AS l ON(l.location_id = u.location_id) ";
   }
   connection.query(sql, function (err, result) {
     if (err) {
@@ -19,7 +19,7 @@ function getUsers(request, response) {
 }
 
 const login = (request, response) => {
-  let sql = `SELECT u.user_id, u.username, u.password, u.name, u.role_id, u.mail, u.warehouse_id, u.location_id, u.active, r.name AS role, w.name AS warehouse, l.name AS location FROM users AS u 
+  let sql = `SELECT u.user_id, u.username, u.password, u.name, u.role_id, u.mail, u.warehouse_id, u.location_id, u.active, r.name AS role, w.name AS warehouse, l.name AS location FROM railway.users AS u 
   LEFT JOIN roles AS r ON(u.role_id = r.role_id)
   LEFT JOIN locations AS l ON(u.location_id = l.location_id)
   LEFT JOIN warehouses AS w ON(u.warehouse_id = w.warehouse_id) WHERE username = \"${request.body.username}\" AND password = \"${request.body.password}\"`;
@@ -49,7 +49,7 @@ const postUsers = (request, response) => {
   console.log("funciono")
   
   let sql =
-    "INSERT INTO `users` (`username`, `password`, `name`, `role_id`, `mail`, `warehouse_id`, `location_id`, `active`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    "INSERT INTO `railway.users` (`username`, `password`, `name`, `role_id`, `mail`, `warehouse_id`, `location_id`, `active`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
   connection.query(sql, params, (err, result) => {
     if (err) {
@@ -76,7 +76,7 @@ const putUser = (request, response) => {
   console.log("funciono");
 
   let sql =
-    "UPDATE `users` SET `password` = ?, `name` = ?, `role_id` = ?, `mail` = ?, `warehouse_id` = ?, `location_id` = ?, `active` = ? WHERE (`username` = ?);";
+    "UPDATE `railway.users` SET `password` = ?, `name` = ?, `role_id` = ?, `mail` = ?, `warehouse_id` = ?, `location_id` = ?, `active` = ? WHERE (`username` = ?);";
 
   connection.query(sql, params, (err, result) => {
     if (err) {
