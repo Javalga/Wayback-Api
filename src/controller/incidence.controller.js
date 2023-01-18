@@ -23,7 +23,7 @@ const getIncidenceProcessed = (request, response) => {
   console.log(request.query.until);
   if (request.query.incidence_ref) {
     sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
-  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM railway.incidence AS i 
+  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM incidence AS i 
   LEFT JOIN status AS s ON(i.status_id = s.status_id)
   LEFT JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
   LEFT JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)
@@ -32,7 +32,7 @@ const getIncidenceProcessed = (request, response) => {
   WHERE (i.incidence_ref = ${request.query.incidence_ref})`;
   } else if (request.query.since && request.query.until) {
     sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
-  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM railway.incidence AS i 
+  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM incidence AS i 
   LEFT JOIN status AS s ON(i.status_id = s.status_id)
   LEFT JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
   LEFT JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)
@@ -41,7 +41,7 @@ const getIncidenceProcessed = (request, response) => {
   WHERE (i.input_date BETWEEN "${request.query.since}" AND "${request.query.until}")`;
   } else {
     sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
-  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM railway.incidence AS i 
+  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM incidence AS i 
   LEFT JOIN status AS s ON(i.status_id = s.status_id)
   LEFT JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
   LEFT JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)
@@ -77,7 +77,7 @@ const postIncidence = (request, response) => {
     request.body.location_id,
   ];
   let sql =
-    "INSERT INTO `railway.incidence` (`incidence_ref`, `status_id`, `incidence_type_id`, `customer_name`, `customer_phone`, `customer_mail`, `customer_address`, `customer_cp`, `customer_city`,`input_date`, `warehouse_id`, `location_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    "INSERT INTO `incidence` (`incidence_ref`, `status_id`, `incidence_type_id`, `customer_name`, `customer_phone`, `customer_mail`, `customer_address`, `customer_cp`, `customer_city`,`input_date`, `warehouse_id`, `location_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
   connection.query(sql, params, (err, result) => {
     if (err) {
       let mensaje_error;
@@ -101,7 +101,7 @@ const getIncidenceSolved = (request, response) => {
   ];
 
   let sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
-  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM railway.incidence AS i 
+  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM incidence AS i 
   LEFT JOIN status AS s ON(i.status_id = s.status_id)
   LEFT JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
   LEFT JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)
@@ -122,7 +122,7 @@ const getIncidenceToReturn = (request, response) => {
   let params = [request.query.since, request.query.until];
 
   let sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
-  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM railway.incidence AS i 
+  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM incidence AS i 
   LEFT JOIN status AS s ON(i.status_id = s.status_id)
   LEFT JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
   LEFT JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)
@@ -141,7 +141,7 @@ const getIncidenceToReturn = (request, response) => {
 
 const getFilteredIncidences = (request, response) => {
   let params = [request.query.col, request.query.value]
-  let sql = `SELECT * FROM railway.csv WHERE ? = ?`;
+  let sql = `SELECT * FROM csv WHERE ? = ?`;
   connection.query(sql, params, (err, result) => {
     if (err) {
       console.log(err);
@@ -168,7 +168,7 @@ const putIncidence = (req, res) => {
   }
   if (incidence != null && req.body.next_delivery == undefined && req.body.delivery_time_id == undefined) {
     console.log(req.body);
-    sql = `UPDATE railway.incidence SET 
+    sql = `UPDATE incidence SET 
     status_id = \"${incidence.status_id}\", 
     customer_name = \"${incidence.customer_name}\", 
     customer_phone = \"${incidence.customer_phone}\",
@@ -213,7 +213,7 @@ const getIncidenceDashboard = (request, response) => {
 
   console.log(request.query.since, request.query.until);
   let sql = `SELECT i.incidence_id , i.incidence_ref, s.name AS status, t.name AS incidence_type, i.customer_name, i.customer_phone, i.customer_mail, i.customer_address,
-  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM railway.incidence AS i 
+  i.customer_cp, i.customer_city, i.input_date, i.output_date, i.next_delivery, i.delivery_time_id, d.name AS delivery_time, w.name AS warehouse, i.warehouse_id, i.status_id, i.incidence_type_id, i.location_id, l.name AS location FROM incidence AS i 
   LEFT JOIN status AS s ON(i.status_id = s.status_id)
   LEFT JOIN incidence_type AS t ON(i.incidence_type_id = t.incidence_type_id)
   LEFT JOIN warehouses AS w ON(i.warehouse_id = w.warehouse_id)

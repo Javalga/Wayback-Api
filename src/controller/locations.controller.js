@@ -29,7 +29,7 @@ const postLocations = (request, response) => {
 
 const putLocations = (request, response) => {
   let params = [request.body.name]
-  let sql = `UPDATE railway.warehouses
+  let sql = `UPDATE warehouses
     SET
     name = COALESCE(?, name)`;
   connection.query(sql, params, (err, result) => {
@@ -43,7 +43,7 @@ const putLocations = (request, response) => {
 }
 
 const deleteLocations = (request, response) => {
-  let sql = `DELETE FROM railway.warehouses WHERE location_id = ${request.body.location_id}`;
+  let sql = `DELETE FROM warehouses WHERE location_id = ${request.body.location_id}`;
   connection.query(sql, params, (err, result) => {
     if (err) {
       console.log(err);

@@ -1,7 +1,7 @@
 const connection = require("../database");
 
 function getRoles(request, response) {
-  let sql = "SELECT * FROM railway.roles";
+  let sql = "SELECT * FROM roles";
   connection.query(sql, function (err, result) {
     if (err) {
       console.log(err);
